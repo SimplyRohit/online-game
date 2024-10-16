@@ -12,7 +12,6 @@ export default function Name() {
       if (response.data.message === "Cookie set successfully") {
         window.location.href = "/";
       }
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }

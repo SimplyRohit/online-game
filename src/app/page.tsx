@@ -2,6 +2,7 @@
 "use client";
 import axios from "axios";
 import SvgIcon from "../../public/svg/Mainpage";
+
 // checking cookies if exist if not this will redirct to /name
 const CheckCookies = async () => {
   try {
@@ -16,6 +17,18 @@ const CheckCookies = async () => {
 };
 CheckCookies();
 
+//this will gen a 4 word code for team and redirect to /[code]
+const GenerateCode = async (length: number = 4) => {
+  let result = "";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const charactersLength = characters.length;
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  window.location.href = `/team/${result}`;
+};
+
 export default function Home() {
   return (
     <div className="flex flex-col h-full w-full mt-10 items-center justify-center">
@@ -26,8 +39,11 @@ export default function Home() {
       <div>
         <SvgIcon />
       </div>
-      <div className="flex h-full justify-evenly w-full pt-20 flex-row items-end ">
-        <button className="text-white bg-[#07689E] p-2  rounded-md transition-transform duration-200 hover:scale-110">
+      <div className="flex h-full justify-evenly w-full  pt-20 flex-row items-end ">
+        <button
+          onClick={() => GenerateCode()}
+          className="text-white bg-[#07689E] p-2  rounded-md transition-transform duration-200 hover:scale-110"
+        >
           make game
         </button>
         <div className="flex flex-col  ">

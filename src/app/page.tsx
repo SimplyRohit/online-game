@@ -50,7 +50,7 @@ export default function Home() {
           <input
             type="text"
             placeholder="code"
-            className="outline-none border-b-4 bg-[#E6D5BC] w-[100px] mb-3 border-[#bb9494] px-5  font-jetbrains-mono-paragraph text-center text-gray-400 p-1 "
+            className="outline-none border-b-4 bg-[#FFFAD4] w-[100px] mb-3 border-[#bb9494] px-5  font-jetbrains-mono-paragraph text-center text-gray-400 p-1 "
           />
           <button className="text-white bg-[#8B5E5E] p-2 rounded-md transition-transform duration-200 hover:scale-110">
             join game

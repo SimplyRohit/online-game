@@ -21,7 +21,6 @@ export default function Playing() {
          w-full h-full overflow-y-auto"
           >
             <h1>{team1playing[0].draw?.name} is drawing</h1>
-
             {team1playing.map((team, index) => (
               <div key={index}>
                 {team.guesser?.map((player, i) => (

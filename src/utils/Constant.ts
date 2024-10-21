@@ -12,3 +12,6 @@ export const team1playing = [
     guesser: ["sachin", "virat", "dhoni", "dhawan", "kohli"],
   },
 ];
+
+export const team1score = ["100", "200", "300", "400", "500"];
+export const team2score = ["100", "200", "300", "400", "500"];

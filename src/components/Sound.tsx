@@ -11,7 +11,7 @@ export default function Sound() {
   const [isSound, setSound] = useState(true);
   const [isMusic, setMusic] = useState(true);
   return (
-    <div className="z-10 absolute right-0 md:top-0 top-28 m-5">
+    <div className="z-10 absolute right-0 top-0 m-5">
       <div className=" flex items-center justify-end">
         <h1 className="text-xl md:block hidden opacity-40">Exit</h1>
         <LogOut className="w-6 mb-2 ml-2 text-[#8B5E5E]" />

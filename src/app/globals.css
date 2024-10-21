@@ -1,33 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-body {
-  background-color: #fffad4;
-}
-
-.jetbrains-mono-code {
-  font-family: "JetBrains Mono", monospace;
-  font-optical-sizing: auto;
-  font-weight: 700;
+@font-face {
+  font-family: "Schoolbell";
+  src: url("/fonts/Schoolbell-Regular.ttf") format("truetype");
+  font-weight: normal;
   font-style: normal;
 }
 
-.jetbrains-mono-paragraph {
-  font-family: "JetBrains Mono", monospace;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: italic;
-}
-
-h1 {
-  @apply jetbrains-mono-code;
-}
-
-p {
-  @apply jetbrains-mono-paragraph;
-}
-
 body {
-  @apply jetbrains-mono-code;
+  background-color: #fffad4;
+  font-family: "Schoolbell", sans-serif;
 }

@@ -16,7 +16,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased`}>
         <Sound />
-
         {children}
         <Footbar />
       </body>

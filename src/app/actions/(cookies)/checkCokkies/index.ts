@@ -1,11 +1,11 @@
+"use server";
 import { cookies } from "next/headers";
-export async function GET() {
+export async function CheckCookiesAction() {
   const cookieStore = cookies();
   const nameCookie = cookieStore.get("name");
-
   if (nameCookie) {
-    return new Response("yes");
+    return "yes";
   } else {
-    return new Response("no");
+    return "no";
   }
 }

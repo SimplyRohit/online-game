@@ -1,15 +1,15 @@
 "use client";
-import axios from "axios";
+import { SetCookiesAction } from "../actions/(cookies)/SetCookies";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 export default function Name() {
   const [name, setName] = useState("");
 
-  // this will make a api call to /api/SetCookies and setname in cookies
+  // this will make a  call to /actions/SetCookies and setname in cookies
   const SetCookies = async () => {
     try {
-      const response = await axios.post("/api/SetCookies", { name });
-      if (response.data.message === "Cookie set successfully") {
+      const response = await SetCookiesAction(name);
+      if (response.message === "Cookie set successfully") {
         window.location.href = "/";
       }
     } catch (error) {

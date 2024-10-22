@@ -1,21 +1,22 @@
 //src/app/page.tsx
 "use client";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import SvgIcon from "../../public/svg/Mainpage";
-
+import { StateMakerAction } from "./actions/(state)/StateMaker";
+import { CheckCookiesAction } from "./actions/(cookies)/checkCokkies";
 // checking cookies if exist if not this will redirct to /name
+
 const CheckCookies = async () => {
   try {
-    const response = await axios.get("/api/checkCokkies");
+    const response = await CheckCookiesAction();
 
-    if (response.data === "no") {
+    if (response === "no") {
       window.location.href = "/name";
     }
   } catch (error) {
     console.log(error);
   }
 };
-CheckCookies();
 
 //this will gen a 4 word code for team and redirect to /[code]
 const GenerateCode = async (length: number = 4) => {
@@ -26,10 +27,29 @@ const GenerateCode = async (length: number = 4) => {
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-  window.location.href = `/team/${result}`;
+  const roomId = result as string;
+  const state = "team" as string;
+  try {
+    const response = await StateMakerAction(roomId, state);
+    if (response.message === "Room created") {
+      window.location.href = `/${result}`;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default function Home() {
+  const [code, setCode] = useState("");
+  useEffect(() => {
+    CheckCookies();
+  });
+
+  // this  will redirect to /[code] or join a room
+  function JoinCode() {
+    window.location.href = `/${code}`;
+  }
+
   return (
     <div className="flex flex-col h-full w-full mt-10 items-center justify-center">
       <h1 className="text-5xl  text-[#8B5E5E]">draw battle!</h1>
@@ -50,9 +70,14 @@ export default function Home() {
           <input
             type="text"
             placeholder="code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
             className="outline-none border-b-4 bg-[#FFFAD4] w-[100px] mb-3 border-[#bb9494] px-5  font-jetbrains-mono-paragraph text-center text-gray-400 p-1 "
           />
-          <button className="text-white bg-[#8B5E5E] p-2 rounded-md transition-transform duration-200 hover:scale-110">
+          <button
+            onClick={() => JoinCode()}
+            className="text-white bg-[#8B5E5E] p-2 rounded-md transition-transform duration-200 hover:scale-110"
+          >
             join game
           </button>
         </div>

@@ -1,6 +1,9 @@
 import { team1playing } from "@/utils/Constant";
-
-export default function Playing() {
+export default function Playing({
+  StateUpdaterresult,
+}: {
+  StateUpdaterresult: () => void;
+}) {
   return (
     <div className="flex w-screen h-screen xl:flex-row flex-col  ">
       <div className="flex md:flex-row flex-col xl:w-[75%] w-full h-full justify-center  md:mb-0 mb-5 md:p-5 p-2 md:mt-14 ">
@@ -8,7 +11,7 @@ export default function Playing() {
         <div className="flex flex-col md:w-[700px] md:h-[500px] w-full min-h-[400px]  ">
           <div className="flex justify-between">
             <h1>_ _ _ _ _ _ _</h1>
-            <h1>Timer</h1>
+            <button onClick={StateUpdaterresult}>Timer</button>
           </div>
           <div className="flex w-full h-full border-[2px]   border-[#8B5E5E] bg-white"></div>
         </div>
@@ -42,7 +45,7 @@ export default function Playing() {
               </div>
             ))}
           </div>
-          <div className="flex md:justify-center justify-between flex-row md:flex hidden">
+          <div className="md:flex md:justify-center justify-between flex-row  hidden">
             <input
               className="outline-none border-4 md:w-[170px]    border-[#8B5E5E] md:rotate-3 font-jetbrains-mono-paragraph text-gray-400 p-2 rounded-md"
               type="text"

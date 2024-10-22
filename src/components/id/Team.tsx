@@ -1,8 +1,11 @@
 "use client";
 import { team1, team2 } from "@/utils/Constant";
-import { useParams } from "next/navigation";
-export default function Code() {
-  const { id } = useParams();
+
+export default function Team({
+  StateUpdaterplaying,
+}: {
+  StateUpdaterplaying: () => void;
+}) {
   return (
     <div className="flex flex-col h-full w-full mt-10 items-center justify-center">
       <h1 className="text-5xl text-center text-[#8B5E5E]">draw battle!</h1>
@@ -41,7 +44,7 @@ export default function Code() {
         </div>
       </div>
       <button
-        onClick={() => (window.location.href = `/playing/${id}`)}
+        onClick={() => StateUpdaterplaying()}
         className="text-white bg-[#8B5E5E] mt-20 p-2 rounded-md transition-transform duration-200 hover:scale-110"
       >
         Start Game

@@ -1,23 +1,23 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended",
-    "plugin:node/recommended",
-    "plugin:promise/recommended",
-    "prettier",
-  ],
+  extends: ["plugin:prettier/recommended", "prettier", "eslint:recommended"],
+  plugins: ["@typescript-eslint"],
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2022,
     sourceType: "module",
+    project: "tsconfig.json",
   },
   env: {
+    es6: true,
     node: true,
-    es2020: true,
   },
   rules: {
-    "node/no-unsupported-features/es-syntax": "off",
-    "import/no-unresolved": "off",
+    "no-var": "error",
+    semi: "error",
+    indent: ["error", 2, { SwitchCase: 1 }],
+    "no-multi-spaces": "error",
+    "space-in-parens": "error",
+    "no-multiple-empty-lines": "error",
+    "prefer-const": "error",
   },
 };

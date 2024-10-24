@@ -3,8 +3,8 @@
 import { useParams } from "next/navigation";
 import { TeamAction } from "../../app/actions/(db)/team";
 import { useEffect, useState } from "react";
-// import { io } from "socket.io-client";
-// const socket = io("http://localhost:3000/api/teamSocket/socket.ts");
+import { io } from "socket.io-client";
+const socket = io("http://localhost:9000");
 
 export default function Team({
   StateUpdaterplaying,
@@ -30,18 +30,17 @@ export default function Team({
     };
   }>();
 
-  // gonna use websocket for update player teams
-  // useEffect(() => {
-  //   socket.emit("joinRoom", roomId);
-  //   socket.emit("startWatchingRoom", roomId);
-  //   socket.on("roomUpdate", (updatedRoom) => {
-  //     console.log("Room updated:", updatedRoom);
-  //     setRoom(updatedRoom);
-  //   });
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // });
+  useEffect(() => {
+    socket.emit("joinRoom", roomId);
+    socket.emit("startWatchingRoom", roomId);
+    socket.on("roomUpdate", (updatedRoom) => {
+      console.log("Room updated:", updatedRoom);
+      setRoom(updatedRoom);
+    });
+    return () => {
+      socket.disconnect();
+    };
+  });
 
   const TeamRed = async () => {
     const teamName = "teamRed";

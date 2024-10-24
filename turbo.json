@@ -13,6 +13,18 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "db:init": {
+      "cache": false
+    },
+    "db:mig": {
+      "cache": false
+    },
+    "db:reset": {
+      "cache": false
+    },
+    "db:prisma": {
+      "cache": false
     }
   }
 }

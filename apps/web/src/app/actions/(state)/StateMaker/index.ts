@@ -1,19 +1,30 @@
 "use server";
-
-import { statemanager } from "../../../../utils/DB/db";
+import prisma from "db";
 
 export async function StateMakerAction(roomId: string, state: string) {
-  if (!statemanager[roomId]) {
+  const existingRoom = await prisma.room.findUnique({
+    where: { id: roomId },
+    include: { players: true },
+  });
+  if (!existingRoom) {
     if (state === "team") {
-      statemanager[roomId] = { state };
-      return { message: "Room created", state };
+      await prisma.room.create({
+        data: {
+          id: roomId,
+          state,
+          players: {
+            create: [],
+          },
+        },
+      });
+
+      return { message: "Room created" };
     } else {
       throw new Error("Invalid state for room creation");
     }
   } else {
     return {
       message: "Room already exists",
-      state: statemanager[roomId].state,
     };
   }
 }

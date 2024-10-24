@@ -28,21 +28,22 @@ export default function Page() {
   };
 
   //this will check state and render components
+
+  const StateChecker = async () => {
+    const roomId = id as string;
+    try {
+      const res = await StateCheckerAction(roomId);
+      setState(res.state as string);
+      if (res.message === "Room does not exist") {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     CheckCookies();
-    const StateChecker = async () => {
-      const roomId = id as string;
-      try {
-        const res = await StateCheckerAction(roomId);
-        setState(res.state as string);
-        if (res.message === "Room does not exist") {
-          router.push("/");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     StateChecker();
   });
 

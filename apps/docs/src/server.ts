@@ -1,12 +1,15 @@
 import express from "express";
-
+import { TeamSocket } from "./Socket/teamSocket";
+import http from "http";
 const app = express();
-const PORT = process.env.PORT || 3001;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/health", (req, res) => {
+  res.send("workingg");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+const httpServer = http.createServer(app);
+TeamSocket(httpServer);
+
+app.listen(9000, () => {
+  console.log(`Server is running on http://localhost:9000`);
 });

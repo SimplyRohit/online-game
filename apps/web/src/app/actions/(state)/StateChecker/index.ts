@@ -1,13 +1,17 @@
 "use server";
-import { statemanager } from "../../../../utils/DB/db";
+import prisma from "@/lib/prisma";
 
 export async function StateCheckerAction(roomId: string) {
-  if (statemanager[roomId]) {
+  const existingRoom = await prisma.room.findUnique({
+    where: { id: roomId },
+  });
+  if (!existingRoom) {
     return {
-      message: "Room exist",
-      state: statemanager[roomId].state,
+      message: "Room does not exist",
     };
   } else {
-    return { message: "Room does not exist" };
+    return {
+      state: existingRoom.state,
+    };
   }
 }

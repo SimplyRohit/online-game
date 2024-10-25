@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@/lib/prisma";
+import prisma from "db";
 
 export async function StateCheckerAction(roomId: string) {
   const existingRoom = await prisma.room.findUnique({

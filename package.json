@@ -8,7 +8,7 @@
     "db:prisma": "turbo db:prisma",
     "build": "turbo build",
     "start": "turbo start",
-    "dev": "turbo dev",
+    "dev": "turbo dev ",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

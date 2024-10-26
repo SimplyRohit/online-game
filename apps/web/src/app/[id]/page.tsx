@@ -8,10 +8,12 @@ import { CheckCookiesAction } from "../actions/(cookies)/checkCokkies";
 import Team from "../../components/id/Team";
 import Playing from "../../components/id/Playing";
 import Result from "../../components/id/Result";
-
+import { io, Socket } from "socket.io-client";
+const socket: Socket = io("http://localhost:9000");
 export default function Page() {
   const router = useRouter();
   const { id } = useParams();
+  const roomId = id as string;
   const [state, setState] = useState<string>("");
 
   // checking cookies if exist if not this will redirct to /name
@@ -21,6 +23,9 @@ export default function Page() {
 
       if (response === "no") {
         router.push("/name");
+      } else {
+        setPlayerid(response.id);
+        setplayername(response.name);
       }
     } catch (error) {
       console.log(error);
@@ -30,9 +35,8 @@ export default function Page() {
   //this will check state and render components
 
   const StateChecker = async () => {
-    const roomId = id as string;
     try {
-      const res = await StateCheckerAction(roomId);
+      const res = await StateCheckerAction(roomId as string);
       setState(res.state as string);
       if (res.message === "Room does not exist") {
         router.push("/");
@@ -45,13 +49,14 @@ export default function Page() {
   useEffect(() => {
     CheckCookies();
     StateChecker();
-  });
+  }, [roomId]);
+  const [playerid, setPlayerid] = useState<string>("");
+  const [playername, setplayername] = useState<string>("");
 
   // stateupdater + /PLAYING
 
   const StateUpdaterplaying = async () => {
     const newstate = "playing";
-    const roomId = id;
     try {
       const res = await StateUpdaterAction(roomId as string, newstate);
       if (res.message === "Room updated") {
@@ -64,7 +69,6 @@ export default function Page() {
 
   // stateupdater + /RESULT
   const StateUpdaterresult = async () => {
-    const roomId = id;
     const newstate = "result";
     const res = await StateUpdaterAction(roomId as string, newstate);
     if (res.message === "Room updated") {
@@ -75,9 +79,22 @@ export default function Page() {
 
   return (
     <>
-      {state === "team" && <Team StateUpdaterplaying={StateUpdaterplaying} />}
+      {state === "team" && (
+        <Team
+          socket={socket}
+          roomID={roomId}
+          playerid={playerid}
+          playername={playername}
+          StateUpdaterplaying={StateUpdaterplaying}
+        />
+      )}
       {state === "playing" && (
-        <Playing StateUpdaterresult={StateUpdaterresult} />
+        <Playing
+          playerid={playerid}
+          roomID={roomId}
+          socket={socket}
+          StateUpdaterresult={StateUpdaterresult}
+        />
       )}
       {state === "result" && <Result />}
     </>

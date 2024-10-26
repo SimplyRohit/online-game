@@ -1,15 +1,22 @@
-import express from "express";
-import { TeamSocket } from "./Socket/teamSocket";
-import http from "http";
-const app = express();
+import dotenv from 'dotenv';
+dotenv.config();
 
-app.get("/health", (req, res) => {
-  res.send("workingg");
+import express from 'express';
+import http from 'http';
+import setupSocket from './Socket/teamSocket'; // Import socket setup
+
+const app = express();
+const server = http.createServer(app);
+
+// Health check route
+app.get('/health', (req, res) => {
+  res.send('working');
 });
 
-const httpServer = http.createServer(app);
-TeamSocket(httpServer);
+// Setup Socket.IO
+setupSocket(server);
 
-app.listen(9000, () => {
-  console.log(`Server is running on http://localhost:9000`);
+const PORT = process.env.PORT || 9000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

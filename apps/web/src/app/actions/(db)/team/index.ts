@@ -1,58 +1,45 @@
-// src/actions/(team)/TeamAction.ts
 "use server";
-import { cookies } from "next/headers";
 import prisma from "db";
 
 export async function TeamAction(
   roomId: string,
-  teamName: "teamRed" | "teamBlue"
+  teamName: "teamRed" | "teamBlue",
+  playerid: string,
+  playername: string
 ) {
-  const cookieStore = cookies();
-  const id = cookieStore.get("id")?.value;
-  const name = cookieStore.get("name")?.value;
-
-  if (!id || !name) {
-    throw new Error("Player ID or name not found in cookies.");
-  }
-
   const existingRoom = await prisma.room.findUnique({
     where: { id: roomId },
     include: { players: true },
   });
 
   if (!existingRoom) {
-    return { message: `Room with ID ${roomId} does not exist.` };
+    return { status: 400 };
   }
 
   const existingPlayer = existingRoom.players.find(
-    (player) => player.id === id
+    (player) => player.playerid === playerid
   );
 
   if (existingPlayer) {
     if (existingPlayer.teamName === teamName) {
-      return {
-        message: `${name} is already in ${teamName}`,
-      };
+      return { status: 201 };
     } else {
       await prisma.player.update({
-        where: { id },
+        where: { id: existingPlayer.id },
         data: { teamName },
       });
-      return {
-        message: `${name} joined ${teamName} in room ${roomId}`,
-      };
+      return { status: 202 };
     }
   }
+
   await prisma.player.create({
     data: {
-      id,
-      name,
+      playerid,
+      name: playername,
       teamName,
-      roomId: roomId,
+      roomId,
     },
   });
 
-  return {
-    message: `${name} joined ${teamName} in room ${roomId}`,
-  };
+  return { status: 200 };
 }

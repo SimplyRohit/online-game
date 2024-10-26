@@ -1,26 +1,43 @@
 // src/components/id/Team.tsx
 "use client";
-import { useParams } from "next/navigation";
-import { TeamAction } from "../../app/actions/(db)/team";
+import { TeamAction } from "@/app/actions/(db)/team";
 import { useEffect, useState } from "react";
+
 export default function Team({
   StateUpdaterplaying,
+  playerid,
+  playername,
+  roomID,
+  socket,
 }: {
   StateUpdaterplaying: () => void;
+  playerid: string;
+  playername: string;
+  roomID: string;
+  socket: Socket;
 }) {
-  const { id } = useParams();
-  const roomId = id;
-  const [players, setPlayers] = useState<
-    { id: string; name: string; teamName: string; roomId: string | null }[]
-  >([]);
+  type Players = {
+    id: string;
+    name: string;
+    teamName: string;
+    roomId: string | null;
+  }[];
+  const [players, setPlayers] = useState<Players>([]);
 
-  const TeamRed = async () => {
-    const teamName = "teamRed";
-    await TeamAction(roomId as string, teamName);
-  };
-  const TeamBlue = async () => {
-    const teamName = "teamBlue";
-    await TeamAction(roomId as string, teamName);
+  useEffect(() => {
+    socket.emit("join-room", roomID);
+
+    socket.on("update-players", (updatedPlayers: Players) => {
+      setPlayers(updatedPlayers);
+    });
+    return () => {
+      socket.off("update-players");
+    };
+  }, [roomID]);
+
+  const joinTeam = async (teamName: "teamRed" | "teamBlue") => {
+    await TeamAction(roomID, teamName, playerid, playername);
+    socket.emit("join-team", roomID);
   };
 
   const teamRedPlayers = players?.filter(
@@ -48,7 +65,7 @@ export default function Team({
             </p>
           ))}
           <button
-            onClick={TeamRed as () => void}
+            onClick={() => joinTeam("teamRed")}
             className=" mt-3 bg-[#FAC7FF] p-2  rounded-md transition-transform duration-200 hover:scale-110"
           >
             join team
@@ -65,7 +82,7 @@ export default function Team({
             </p>
           ))}
           <button
-            onClick={TeamBlue as () => void}
+            onClick={() => joinTeam("teamBlue")}
             className=" mt-3 bg-[#FAC7FF] p-2  rounded-md transition-transform duration-200 hover:scale-110"
           >
             join team

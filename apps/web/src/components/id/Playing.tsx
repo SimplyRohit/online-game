@@ -1,14 +1,46 @@
 // src/components/id/Playing.tsx
+import { useEffect, useState } from "react";
 import { team1playing } from "../../utils/Constant";
+import { ResultAction } from "@/app/actions/(db)/result";
 export default function Playing({
   StateUpdaterresult,
+  socket,
+  roomID,
+  playerid,
 }: {
   StateUpdaterresult: () => void;
+  socket: Socket;
+  roomID: string;
+  playerid: string;
 }) {
+  type Players =
+    | {
+        id: number;
+        playerid: string;
+        name: string;
+        teamName: string;
+        roomId: string;
+      }[]
+    | undefined;
+  const [players, setPlayers] = useState<Players>([]);
+  useEffect(() => {
+    const Playerdata = async () => {
+      const players = await ResultAction(roomID);
+      setPlayers(players);
+    };
+    Playerdata();
+  }, [roomID]);
+
+  const teamRedPlayers = players?.filter(
+    (player) => player.teamName === "teamRed"
+  );
+  const teamBluePlayers = players?.filter(
+    (player) => player.teamName === "teamBlue"
+  );
+
   return (
     <div className="flex w-screen h-screen xl:flex-row flex-col  ">
       <div className="flex md:flex-row flex-col xl:w-[75%] w-full h-full justify-center  md:mb-0 mb-5 md:p-5 p-2 md:mt-14 ">
-        {/* timer */}
         <div className="flex flex-col md:w-[700px] md:h-[500px] w-full min-h-[400px]  ">
           <div className="flex justify-between">
             <h1>_ _ _ _ _ _ _</h1>
@@ -17,7 +49,6 @@ export default function Playing({
           <div className="flex w-full h-full border-[2px]   border-[#8B5E5E] bg-white"></div>
         </div>
 
-        {/* team 1 playing */}
         <div className="flex flex-col   md:ml-10   md:h-[500px]  ">
           <div
             className="flex md:justify-center justify-between flex-row md:hidden md:pt-0 pt-2
@@ -58,7 +89,6 @@ export default function Playing({
         </div>
       </div>
 
-      {/* team 2 playing */}
       <div className="xl:h-full xl:w-0 w-full h-0 border-[1px] md:flex hidden   border-[#8B5E5E]  "></div>
 
       <div className="flex xl:w-[25%] w-full h-full xl:pl-0 pl-1.5 xl:justify-center  ">

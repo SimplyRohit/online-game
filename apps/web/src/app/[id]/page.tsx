@@ -8,8 +8,6 @@ import { CheckCookiesAction } from "../actions/(cookies)/checkCokkies";
 import Team from "../../components/id/Team";
 import Playing from "../../components/id/Playing";
 import Result from "../../components/id/Result";
-import { io, Socket } from "socket.io-client";
-const socket: Socket = io("http://localhost:9000");
 export default function Page() {
   const router = useRouter();
   const { id } = useParams();
@@ -81,7 +79,6 @@ export default function Page() {
     <>
       {state === "team" && (
         <Team
-          socket={socket}
           roomID={roomId}
           playerid={playerid}
           playername={playername}
@@ -92,7 +89,6 @@ export default function Page() {
         <Playing
           playerid={playerid}
           roomID={roomId}
-          socket={socket}
           StateUpdaterresult={StateUpdaterresult}
         />
       )}

@@ -2,14 +2,13 @@
 import { useEffect, useState } from "react";
 import { team1playing } from "../../utils/Constant";
 import { ResultAction } from "@/app/actions/(db)/result";
+import socket from "@/lib/socket";
 export default function Playing({
   StateUpdaterresult,
-  socket,
   roomID,
   playerid,
 }: {
   StateUpdaterresult: () => void;
-  socket: Socket;
   roomID: string;
   playerid: string;
 }) {

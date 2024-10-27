@@ -2,19 +2,18 @@
 "use client";
 import { TeamAction } from "@/app/actions/(db)/team";
 import { useEffect, useState } from "react";
+import socket from "@/lib/socket";
 
 export default function Team({
   StateUpdaterplaying,
   playerid,
   playername,
   roomID,
-  socket,
 }: {
   StateUpdaterplaying: () => void;
   playerid: string;
   playername: string;
   roomID: string;
-  socket: Socket;
 }) {
   type Players = {
     id: string;
